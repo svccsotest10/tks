@@ -1,27 +1,23 @@
----
-template_variables:
-  book_title: Tanzu Application Service for Kubernetes Documentation
-  book_title_short: TAS for K8S Documentation
-  title: <span class="title-deemph">TAS for K8S</span> Documentation
-  hero_text: "Detailed documentation to help you install, understand, and succeed with Tanzu Application Service for Kubernetes."
-  product_name: Tanzu Application Service for Kubernetes
-  product_abbr: TAS for K8S
-  product_url: https://network.pivotal.io/products/tas-for-kubernetes/
-  product_link: <div class="header-item"><a href="https://network.pivotal.io/products/tas-for-kubernetes/">Back to Product Page</a></div>
-  support_link: <a href="https://tanzu.vmware.com/support" target="_blank">Support</a>
-  support_call_to_action: <a href="https://tanzu.vmware.com/support" target="_blank">Need Support?</a>
-  support_url: https://tanzu.vmware.com/support
-  use_global_header: true
-  global_header_product_href: https://network.pivotal.io/
-  global_header_product_link_text: Downloads
-  gtm_account_id: GTM-MW4LZHR
-
-# Global product variables
-  app_runtime_full: Tanzu Application Service for Kubernetes
-  app_runtime_short: TAS for Kubernetes
-  app_runtime: Application Service
-  k8s_runtime_full: Tanzu Kubernetes Grid Integrated Edition
-  k8s_runtime: Tanzu Kubernetes Grid Integrated Edition
-  k8s_runtime_abbr: TKGI
-  local_product_version: 0.7.0
-  standard_runtime_name: Tanzu Application Service for VMs
+book_title: Tanzu Application Service for Kubernetes Documentation
+book_title_short: TAS for K8S Documentation
+title: <span class="title-deemph">TAS for K8S</span> Documentation
+hero_text: "Detailed documentation to help you install, understand, and succeed with Tanzu Application Service for Kubernetes."
+product_name: Tanzu Application Service for Kubernetes
+product_abbr: TAS for K8S
+product_url: https://network.pivotal.io/products/tas-for-kubernetes/
+product_link: <div class="header-item"><a href="https://network.pivotal.io/products/tas-for-kubernetes/">Back to Product Page</a></div>
+support_link: <a href="https://tanzu.vmware.com/support" target="_blank">Support</a>
+support_call_to_action: <a href="https://tanzu.vmware.com/support" target="_blank">Need Support?</a>
+support_url: https://tanzu.vmware.com/support
+use_global_header: true
+global_header_product_href: https://network.pivotal.io/
+global_header_product_link_text: Downloads
+gtm_account_id: GTM-MW4LZHR
+app_runtime_full: Tanzu Application Service for Kubernetes
+app_runtime_short: TAS for Kubernetes
+app_runtime: Application Service
+k8s_runtime_full: Tanzu Kubernetes Grid Integrated Edition
+k8s_runtime: Tanzu Kubernetes Grid Integrated Edition
+k8s_runtime_abbr: TKGI
+local_product_version: 0.7.0
+standard_runtime_name: Tanzu Application Service for VMs
