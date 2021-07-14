@@ -1,0 +1,201 @@
+---
+title: Configuring Apps Manager
+owner: Apps Manager
+---
+
+This topic describes how to customize the Apps Manager deployed with
+<%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>).
+
+## <a id='overview'></a> Overview
+Apps Manager on <%= vars.app_runtime_short %> provides a UI for:  
+
+* Creating and deleting orgs, domains and spaces  
+* Managing services, members, and permissions
+
+<br>
+Apps Manager configuration settings are stored in the `apps-manager-values.yml` configuration file. 
+To create an Apps Manager configuration file: [Create the Apps Manager Configuration File](#create-configuration).
+
+You can use Apps Manager's default configuration, or
+you can customize Apps Manager in the following ways:
+
+* Customize the Marketplace
+* White-label the UI
+* Disable/Enable features
+
+To customize your Apps Manager configuration: [Configure Apps Manager](#configure-apps-manager).  
+<br>
+For more information about Apps Manager, see
+[Getting Started with Apps Manager](https://docs.run.pivotal.io/console/dev-console.html).
+
+<p class="note"><strong>Note:</strong> Users are currently unable to invite members to orgs and spaces through Apps Manager.
+  This feature depends on the Notifications Service, which is not available on <%= vars.app_runtime_short %>.
+</p>
+
+
+## <a id='prerequisites'></a> Prerequisites
+
+Before customizing Apps Manager, complete the following:
+
+* Complete the steps in
+[Configuring Installation Values](configuring-installation-values.html).
+* Ensure that your installation has a `configuration-values` directory within the
+`tanzu-application-service` directory. For more information, see
+[Generate Internal Configuration Values](configuring-installation-values.html#generate-configuration-values)
+in _Configuring Installation Values for <%= vars.app_runtime_short %>_.
+
+## <a id='create-configuration'></a> Create the Apps Manager Configuration File
+
+Create and store your Apps Manager configuration values file within the `configuration-values`
+directory used to store <%= vars.app_runtime_short %> configuration values.
+
+To create the `apps-manager-values.yml` Apps Manager configuration file:
+
+1. Open a command line and change directory to the parent directory that contains `tanzu-application-service` directory.
+1. Confirm there is a `configuration-values` subdirectory in this directory.
+1. To copy the Apps Manager Sample Values file as your baseline `apps-manager-values.yml` Apps Manager configuration:
+
+    ```
+    cp tanzu-application-service/sample-apps-manager-values.yml configuration-values/apps-manager-values.yml
+    ```
+
+
+## <a id='configure-apps-manager'></a> Configure Apps Manager
+You can customize Apps Manager by modifying the `apps-manager-values.yml` configuration file.
+
+To customize Apps Manager:
+
+1. Change directory to the `configuration-values` directory.
+
+1. Edit the `apps-manager-values.yml` file.
+
+1. Complete one or more of the following:
+    * [Configure Apps Manager Base Settings](#customize-apps-manager-configuration)
+    * [Configure Apps Manager White-Labeling](#customize-apps-manager-white-label)
+    * [Configure the Apps Manager Search Server](#customize-apps-manager-searchserver)
+
+### <a id='customize-apps-manager-configuration'></a> Configure Apps Manager Base Settings
+
+To configure Apps Manager base settings:
+
+1. Ensure the `apps-manager-values.yml` file has an `apps_manager:` section.
+1. Add the desired property configuration, using `property: value` format.
+See [Configurable Apps Manager Base Settings](#apps-manager-base-settings) below.
+1. Review the completed file. The configuration file
+should be a well formatted YAML file.
+<br>
+    For example:
+
+    ```yaml
+    #@data/values
+    ---
+    apps_manager:
+      currency_lookup: {"usd":"$","eur":"€"}
+      enable_displaying_plan_prices: "false"
+      poll_interval: 30
+      app_details_poll_interval: 10
+    ```
+
+#### <a id='apps-manager-base-settings'></a> Configurable Apps Manager Base Settings
+The following are all of the configurable Apps Manager base settings:
+<table class="nice">
+  <tr>
+    <th width="40%">Property</th>
+    <th width="20%">Default Value</th>
+    <th width="40%">Description</th>
+  </tr>
+<tr><td>currency\_lookup</td><td>{"usd":"$","eur":"€"}</td><td>Supported currency symbols</td></tr>
+<tr><td>enable\_displaying\_plan\_prices</td><td>false</td><td>Display Marketplace Service Plan Prices</td></tr>
+<tr><td>poll\_interval</td><td>30</td><td>The Apps Manager poll interval. Enter value in seconds.</td></tr>
+<tr><td>app\_details\_poll\_interval</td><td>10</td><td>The app details polling interval. Enter value in seconds.</td></tr>
+</table>
+
+### <a id='customize-apps-manager-white-label'></a> Configure Apps Manager White-Labeling
+
+To configure Apps Manager White-Labeling settings:
+
+1. Ensure the `apps-manager-values.yml` file has an `apps_manager:` section.
+1. Ensure the `apps_manager:` section includes a `whitelabeling:` sub-section.
+1. Add the desired property configuration, using `property: value` format.
+See [Configurable Apps Manager White-Label Settings](#apps-manager-white-label-settings) below.
+1. Review the completed file. The configuration file
+should be a well formatted YAML file.
+<br>
+    For example:
+
+    ```yaml
+    #@data/values
+    ---
+    apps_manager:
+
+      whitelabeling:
+        product_name: "Apps Manager"
+        accent_color: "#00A79D"
+        favicon: ""
+        footer_links: "[]"
+    ```
+1. Save the configuration file.
+
+#### <a id='apps-manager-white-label-settings'></a> Configurable Apps Manager White-Label Settings
+The following are all of the configurable Apps Manager White-Label settings:
+<table class="nice">
+  <tr>
+    <th width="40%">Property</th>
+    <th width="20%">Default Value</th>
+    <th width="40%">Description</th>
+  </tr>
+<tr><td>app\_icon</td><td>tanzu icon</td><td>Icon for apps manager UAA portal link</td></tr>
+<tr><td>company\_name</td><td>"VMware"</td><td>Custom company name to display.</td></tr>
+<tr><td>product\_name</td><td>"Apps Manager"</td><td>Custom product name to display.</td></tr>
+<tr><td>accent\_color</td><td>#00A79D</td><td>Custom color for the app. Enter a hexadecimal color code. For example, "#71ffda".</td></tr>
+<tr><td>favicon</td><td>""</td><td>Custom favicon. Enter a base64-encoded PNG image string, leaving out the mime-typ (data:image/png;base64,) string.</td></tr>
+<tr><td>footer\_links</td><td>"[]"</td><td>Json array of links for the footer (format '[{"name":"link", "href": "https://google.com"}]'</td></tr>
+<tr><td>footer\_text</td><td>""</td><td>Custom footer text.</td></tr>
+<tr><td>global\_wrapper\_bg\_color</td><td>"#D6D6D6"</td><td>Classification header and footer background color. Enter a hexadecimal color code. For example, "#71ffda".</td></tr>
+<tr><td>global\_wrapper\_text\_color</td><td>"#333"</td><td>Classification header and footer text color. Enter a hexadecimal color code. For example, "#71ffda".</td></tr>
+<tr><td>global\_wrapper\_footer\_content</td><td>""</td><td>Classification footer content. Enter plain text or HTML markup.</td></tr>
+<tr><td>global\_wrapper\_header\_content</td><td>""</td><td>Classification header content. Enter plain text or HTML markup.</td></tr>
+<tr><td>logo</td><td>""</td><td>Custom logo. Enter a base64-encoded PNG image string, leaving out the mime-typ (data:image/png;base64,) string.</td></tr>
+<tr><td>marketplace\_name</td><td>"Marketplace"</td><td>Name of the marketplace. Enter plain text or HTML markup</td></tr>
+<tr><td>marketplace\_url</td><td>"/marketplace"</td><td>Apps Manager Marketplace link to point to a custom marketplace.</td></tr>
+<tr><td>secondary\_navigation\_links</td><td>'[{"name":"Docs","href":"https&#58;//docs.run.pivotal.io"},{"name":"Tools","href"&#58;"/tools"}]'</td><td>List of secondary navigation links of Apps Manager. Enter json string.</td></tr>
+</table>
+
+## <a id="next"></a> Next Steps
+
+After you complete this procedure, proceed to
+[Installing <%= vars.app_runtime_full %>](installing-tas-for-kubernetes.html).
+
+<%#
+# # #
+< a
+id='available-configurations'></a> Available Configurations
+
+The following are all of the configurable Apps Manager settings:
+<table class="nice">
+  <tr>
+    <th width="40%">Property</th>
+    <th width="20%">Default Value</th>
+    <th width="40%">Description</th>
+  </tr>
+<tr><td>apps\_manager.currency\_lookup</td><td> '{"usd":"$","eur":"€"}'</td><td>Supported currency symbols</td></tr>
+<tr><td>apps\_manager.enable\_displaying\_plan\_prices</td><td>false</td><td>Display Marketplace Service Plan Prices</td></tr>
+<tr><td>apps\_manager.poll\_interval</td><td>30</td><td>The Apps Manager poll interval. Enter value in seconds.</td></tr>
+<tr><td>apps\_manager.app\_details\_poll\_interval</td><td>10</td><td>The app details polling interval. Enter value in seconds.</td></tr>
+<tr><td>apps\_manager.whitelabeling.app\_icon</td><td>tanzu icon</td><td>Icon for apps manager UAA portal link</td></tr>
+<tr><td>apps\_manager.whitelabeling.company\_name</td><td>"VMware"</td><td>Custom company name to display.</td></tr>
+<tr><td>apps\_manager.whitelabeling.product\_name</td><td>"Apps Manager"</td><td>Custom product name to display.</td></tr>
+<tr><td>apps\_manager.whitelabeling.accent\_color</td><td>#00A79D</td><td>Custom color for the app. Enter a hexadecimal color code. For example, "#71ffda".</td></tr>
+<tr><td>apps\_manager.whitelabeling.favicon</td><td>""</td><td>Custom favicon. Enter a base64-encoded PNG image string, leaving out the mime-typ (data:image/png;base64,) string.</td></tr>
+<tr><td>apps\_manager.whitelabeling.footer\_links</td><td>"[]"</td><td>Json array of links for the footer (format '[{"name":"link", "href": "https://google.com"}]'</td></tr>
+<tr><td>apps\_manager.whitelabeling.footer\_text</td><td>""</td><td>Custom footer text.</td></tr>
+<tr><td>apps\_manager.whitelabeling.global\_wrapper\_bg\_color</td><td>"#D6D6D6"</td><td>Classification header and footer background color. Enter a hexadecimal color code. For example, "#71ffda".</td></tr>
+<tr><td>apps\_manager.whitelabeling.global\_wrapper\_text\_color</td><td>"#333"</td><td>Classification header and footer text color. Enter a hexadecimal color code. For example, "#71ffda".</td></tr>
+<tr><td>apps\_manager.whitelabeling.global\_wrapper\_footer\_content</td><td>""</td><td>Classification footer content. Enter plain text or HTML markup.</td></tr>
+<tr><td>apps\_manager.whitelabeling.global\_wrapper\_header\_content</td><td>""</td><td>Classification header content. Enter plain text or HTML markup.</td></tr>
+<tr><td>apps\_manager.whitelabeling.logo</td><td>""</td><td>Custom logo. Enter a base64-encoded PNG image string, leaving out the mime-typ (data:image/png;base64,) string.</td></tr>
+<tr><td>apps\_manager.whitelabeling.marketplace\_name</td><td>"Marketplace"</td><td>Name of the marketplace. Enter plain text or HTML markup</td></tr>
+<tr><td>apps\_manager.whitelabeling.marketplace\_url</td><td>"/marketplace"</td><td>Apps Manager Marketplace link to point to a custom marketplace.</td></tr>
+<tr><td>apps\_manager.whitelabeling.secondary\_navigation\_links</td><td>'[{"name":"Docs","href":"https&#58;//docs.run.pivotal.io"},{"name":"Tools","href"&#58;"/tools"}]'</td><td>List of secondary navigation links of Apps Manager. Enter json string.</td></tr>
+</table>
+%>

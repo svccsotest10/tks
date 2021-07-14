@@ -1,0 +1,282 @@
+---
+title: Restoring <%= vars.app_runtime_full %>
+owner: Tanzu Application Service Release Engineering
+---
+<% current_page.data.title = "Restoring #{vars.app_runtime_full}" %>
+
+This topic provides an overview of how to restore
+<%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>) from a backup.
+
+<%= partial 'evaluation_only' %>
+
+<%= partial 'limitation_notes' %>
+
+## <a id='overview'></a> Overview
+
+
+When restoring the <%= vars.app_runtime_short %> database,
+the data for all the orgs, spaces, and apps are restored.
+
+Database restore is not granular.
+
+To restore <%= vars.app_runtime_short %>: 
+
+* [Start <%= vars.app_runtime_short %> Restore](#restore-tas)
+* [Monitor the Restore Progress](#restore-monitoring)
+* [Review the Completed Restore](#restore-review)
+
+## <a id='prerequisites'></a> Prerequisites
+
+You must have access to the <%= vars.app_runtime_short %> Velero backup artifacts you plan to restore.
+
+
+## <a id='restore-tas'></a> Start <%= vars.app_runtime_short %> Restore
+
+To restore a <%= vars.app_runtime_short %> backup:
+
+* [Prepare the Velero Backup Artifacts](#restore-prepare)
+* [Start a <%= vars.app_runtime_short %> Velero Restore](#restore-start)
+
+### <a id='restore-prepare'></a> Prepare the Velero Backup Artifacts
+
+To prepare your <%= vars.app_runtime_short %> Velero backup artifacts:
+
+1. Determine the name of the backup to be restored:
+
+    ```
+    $ velero backup get
+    ```
+
+1. (Optional) To see backup metadata for any of the backups,
+generate a JSON file containing a snapshot of Cloud Foundry at the time of the backup.
+
+    ```
+    ./tanzu-application-service/config/_ytt_lib/github.com/pivotal/cf-for-k8s-disaster-recovery/backup-metadata/bin/get-backup-metadata.sh BACKUP-NAME OUTPUT-FILENAME
+    ```
+
+    Where:
+    * `BACKUP-NAME` is the name of the backup you want to validate against.
+    * `OUTPUT-FILENAME` is the name of the backup state JSON file to create.
+
+    For example:
+    <pre class="terminal">
+    $ ./tanzu-application-service/config/_ytt_lib/github.com/pivotal/cf-for-k8s-disaster-recovery/backup-metadata/bin/get-backup-metadata.sh backup_1 output-file.json
+    </pre>
+
+1. To prepare database resources for a restoration:
+
+    ```
+    kubectl -n postgres-dbs delete postgres.sql.tanzu.vmware.com/ccdb --wait
+    kubectl -n postgres-dbs delete pvc --selector postgres-instance=ccdb
+    kubectl -n postgres-dbs delete postgres.sql.tanzu.vmware.com/uaadb --wait
+    kubectl -n postgres-dbs delete pvc --selector postgres-instance=uaadb
+    ```
+
+    The `--wait` parameter is optional. Include the `--wait` parameter to follow the restore procedure progress.
+
+    <p class="note"><strong>Note:</strong> This process deletes some Kubernetes resources,
+    forcing Velero to restore the database Pod's persistent volume to the backup version.
+    This is required to restore the correct data.
+    </p>
+
+
+### <a id='restore-start'></a> Start a <%= vars.app_runtime_short %> Velero Restore
+
+To restore <%= vars.app_runtime_short %> Tanzu Postgres Instances:
+
+1. To restore Tanzu Postgres Databases:
+
+    ```
+    velero create restore RESTORE-NAME \
+      --from-backup BACKUP-NAME \
+      --wait
+    ```
+
+    Where:
+    * `BACKUP-NAME` is the name of the Velero backup artifact to be restored.
+    * `RESTORE-NAME` is a name you choose to identify this restore attempt.
+
+    The `--wait` parameter is optional. Include the `--wait` parameter to follow the restore procedure progress.
+
+## <a id='restore-monitoring'></a> Monitor the Restore Progress
+
+To inspect the status of a restore:
+
+* [Review All Restores](#restore-monitor-all)
+* [Inspect a Single Restore](#restore-monitor-single)
+
+### <a id='restore-monitor-all'></a> Review All Restores
+
+To see the names and status of all restores:
+
+1. Open a command line.
+1. To display information about all restores:
+
+    ```
+    velero get restores
+    ```
+
+    For example:
+
+    <pre class="terminal">
+    $ velero get restores
+
+    NAME    STATUS                       CREATED EXPIRES STORAGE LOCATION  SELECTOR
+    restore_1 Completed 2020-03-24 14:12:29 +0000 UTC    21d          default    &lt;none&gt;
+    </pre>
+
+### <a id='restore-monitor-single'></a> Inspect a Single Restore
+
+To review the status of a single restore:
+
+1. Determine the name of the restore. For more information, see [Review All Restores](#restore-monitor-all) above.
+1. To display information about a single restore:
+
+    ```
+    velero describe restore RESTORE-NAME
+    ```
+
+    For example:
+
+    <pre class="terminal">
+    $ velero describe restore MY_RESTORE_NAME
+    Note: Add --details flag for highly verbose output
+
+    Name:         MY_RESTORE_NAME
+    Namespace:    default
+    Labels:       &lt;none&gt;
+    Annotations:  &lt;none&gt;
+
+    Phase:  Completed
+
+    Backup:  MY_BACKUP_NAME
+
+    Namespaces:
+      Included:  *
+      Excluded:  &lt;none&gt;
+
+    Resources:
+      Included:        *
+      Excluded:        nodes, events, events.events.k8s.io, backups.velero.io, restores.velero.io, resticrepositories.velero.io
+      Cluster-scoped:  auto
+
+    Namespace mappings:  &lt;none&gt;
+
+    Label selector:  &lt;none&gt;
+
+    Restore PVs:  auto
+    </pre>
+
+## <a id='restore-review'></a> Review the Completed Restore
+
+To review and validate a completed restore:
+
+* [Review Restore Logs](#restore-monitor-logs)
+* [Validate the Restore](#restore-validate)
+
+### <a id='restore-monitor-logs'></a> Review Restore Logs
+
+You can inspect the logs for your restore after the restore has completed.
+Review the logs for any failures and their root causes.
+
+To review the logs for a particular restore:
+
+1. Run:
+
+    ```
+    velero restore logs RESTORE-NAME
+    ```
+
+    Where `RESTORE-NAME` is name you provided as your restore name.
+
+
+### <a id='restore-validate'></a> Validate the Restore
+
+The Cloud Foundry Metadata reporting tool provides two scripts to capture the
+Cloud Foundry state from the backup, and then compare it to the live, restored state.
+
+<p class="note"><strong>Note:</strong> The Cloud Foundry state from the backup is not a
+    complete snapshot and should only be used as an aid to verifying the data.
+The validation follows the Cloud Foundry constructs of “users, orgs, spaces, and apps”
+to measure what data was in Cloud Foundry during a back up.
+</p>
+
+After your restore has completed, follow the steps
+below to validate the restored data.
+
+
+#### <a id='restore-validate-prerequisites'></a> Prerequisites
+
+Before validating your backup:
+
+1. Confirm that the following scripts are in the `tanzu-application-service/config/_ytt_lib/github.com/pivotal/cf-for-k8s-disaster-recovery/backup-metadata/bin` 
+directory:  
+    * `get-backup-metadata.sh`
+    * `compare-backup-metadata.sh`
+
+    If the scripts are not present, download the Tanzu Application Service from 
+    [VMware Tanzu Network](https://network.pivotal.io/products/tas-for-kubernetes#/releases/777237). 
+    For more information, see [Prepare Your Installation Resources]
+    (preparing-to-install-tas-for-kubernetes.html#preparing-installation-resources).  
+
+1. Prepare the `compare-backup-metadata.sh` script for validating your restore:
+
+    1. Open the `compare-backup-metadata.sh` script.
+    1. To specify the container, modify the last line in the script to include `-c cf-metadata`:
+
+        ```
+        kubectl ${NAMESPACE} exec -it "${POD_NAME}" -c cf-metadata -- bash -ce 'backup-metadata compare' < "$1"
+        ```
+
+        <p class="note"><strong>Note:</strong> You must modify the <code>compare-backup-metadata.sh</code> script to 
+        explicitly specify the <code>cf-metadata</code> container because the <code>cf-metadata</code> container 
+        is not the default container in the Pod. 
+        </p>
+
+
+#### <a id='restore-validate-procedure'></a> Procedure
+
+To validate a completed restore:
+
+1. To determine the name of the backup used to restore your system:
+
+    ```
+    velero get backups
+    ```
+
+    For example:
+
+    <pre class="terminal">
+    $ velero get backups
+
+    NAME    STATUS                       CREATED EXPIRES STORAGE LOCATION  SELECTOR
+    backup_1 Completed 2020-03-24 14:12:29 +0000 UTC     21d          default    &lt;none&gt;
+    </pre>
+
+1. To generate a snapshot of the Cloud Foundry state at the time of the back up:
+
+    ```
+    tanzu-application-service/config/_ytt_lib/github.com/pivotal/cf-for-k8s-disaster-recovery/backup-metadata/bin/get-backup-metadata.sh BACKUP-NAME OUTPUT-FILENAME
+    ```
+
+    Where:
+    * `BACKUP-NAME` is the name of the backup you restored.
+    * `OUTPUT-FILENAME` is the name of the Cloud Foundry state file to create for the backup.
+    The created state file is a JSON formatted file.
+
+    For example:
+    <pre class="terminal">
+    $ ./tanzu-application-service/config/_ytt_lib/github.com/pivotal/cf-for-k8s-disaster-recovery/backup-metadata/bin/get-backup-metadata.sh backup_1 output-file.json
+    </pre>
+
+1. To compare the backup state to the restored system state:
+
+    ```
+    tanzu-application-service/config/_ytt_lib/github.com/pivotal/cf-for-k8s-disaster-recovery/backup-metadata/bin/compare-backup-metadata.sh OUTPUT-FILENAME NAMESPACE
+    ```
+    Where:  
+    * `OUTPUT-FILENAME` is the name of the backup state JSON file created in the previous step.  
+    * `NAMESPACE` is the Kubernetes namespace that the cf-metadata pod is running in. The default namespace is `cf-system`.  
+<br>
+    The script displays the difference between the current restored Cloud Foundry state and
+    the system's state at the time the backup was created.

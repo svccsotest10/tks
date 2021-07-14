@@ -1,0 +1,180 @@
+---
+title: Configuring Your System Databases
+owner: Tanzu Application Service Release Engineering
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to configure <%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>) to use Tanzu Postgres for User Account and Authentication (UAA), Cloud Controller, and Usage service.
+
+## <a id='overview'></a>Overview
+
+UAA, Cloud Controller, and Usage service require individual Tanzu Postgres databases.
+
+To create and configure databases for these system components:
+
+  1. [Provision Tanzu Postgres Databases](#provision-postgres-databases)
+  1. [Configure Databases for the System Components](#config-databases)
+
+## <a id='prerequisites'></a> Prerequisites
+
+Before you provision the databases, you must:
+
+* Install Tanzu Postgres. See [Installing VMware Tanzu Postgres](http://postgres-kubernetes.docs.pivotal.io/1-0/installing.html).
+* Create the Postgres operator release on your cluster. See [Creating a Postgres Operator Release](http://postgres-kubernetes.docs.pivotal.io/1-0/create-release.html).
+
+## <a id='provision-postgres-databases'></a>Provision Tanzu Postgres Databases
+
+The UAA, Cloud Controller, and Usage service each need a Tanzu Postgres database.
+
+To configure these three databases:
+
+1. Create a file named `postgres-databases.yml` and store it outside of the scope of <%= vars.app_runtime_short %>. Note that this file is only used for deploying the databases. It is not part of the <%= vars.app_runtime_short %> configuration.
+
+1. Copy and paste the following text into the `postgres-databases.yml` file:
+
+    ```
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: postgres-dbs
+    ---
+    apiVersion: "sql.tanzu.vmware.com/v1"
+    kind: "Postgres"
+    metadata:
+      name: ccdb
+      namespace: postgres-dbs
+    spec:
+      memory: "800Mi"
+      cpu: "0.5"
+      storageClassName: STORAGE-CLASS
+      serviceType: ClusterIP
+      storageSize: 10G
+      pgConfig:
+        dbname: cloud_controller
+        username: cloud_controller
+    ---
+    apiVersion: "sql.tanzu.vmware.com/v1"
+    kind: "Postgres"
+    metadata:
+      name: uaadb
+      namespace: postgres-dbs
+    spec:
+      memory: "800Mi"
+      cpu: "0.5"
+      storageClassName: STORAGE-CLASS
+      serviceType: ClusterIP
+      storageSize: 10G
+      pgConfig:
+        dbname: uaa
+        username: uaa
+    ---
+    apiVersion: "sql.tanzu.vmware.com/v1"
+    kind: "Postgres"
+    metadata:
+      name: usagedb
+      namespace: postgres-dbs
+    spec:
+      memory: "800Mi"
+      cpu: "0.5"
+      storageClassName: STORAGE-CLASS
+      serviceType: ClusterIP
+      storageSize: 10G
+      pgConfig:
+        dbname: usage_service
+        username: usage_service
+    ```
+    Where `STORAGE-CLASS` is the name you want to use for the Storage Class for databases.
+    <br><br>
+    This YAML file defines a Postgres namespace and database for each of the following components:
+    - Cloud Controller
+    - UAA
+    - Usage service
+
+1. To create Postgres namespaces and databases for the above components, target your Kubernetes cluster and apply the YAML file:
+
+    ```bash
+    kubectl apply -f postgres-databases.yml
+    ```
+
+    The hostnames for each of the databases created are as follows:
+
+    ```bash
+    USAGE-SERVICE-DB-HOSTNAME=usagedb.postgres-dbs
+    UAADB-HOSTNAME=uaadb.postgres-dbs
+    CCDB-HOSTNAME=ccdb.postgres-dbs
+    ```
+
+1. To ensure that the new databases support case-insensitive strings, run the following script:
+
+    ```bash
+    kubectl exec -it -n postgres-dbs ccdb-0 -- psql -d cloud_controller -c "CREATE EXTENSION citext"
+    kubectl exec -it -n postgres-dbs uaadb-0 -- psql -d uaa -c "CREATE EXTENSION citext"
+    kubectl exec -it -n postgres-dbs usagedb-0 -- psql -d usage_service -c "CREATE EXTENSION citext"
+    ```
+
+1. Retrieve the password for each database. Use these passwords when configuring the system component databases. See [Configure Databases for the System Components](#config-databases) below.
+
+    ```
+    CCDBPW=`bosh interpolate --path='/data/password' <( kubectl get secret -n postgres-dbs ccdb-db-secret -o yaml ) | base64 --decode`
+    UAADBPW=`bosh interpolate --path='/data/password' <( kubectl get secret -n postgres-dbs uaadb-db-secret -o yaml ) | base64 --decode`
+    USAGEDBPW=`bosh interpolate --path='/data/password' <( kubectl get secret -n postgres-dbs usagedb-db-secret -o yaml ) | base64 --decode`
+
+    cat <<EOT
+    USAGE-SERVICE-DB-PASSWORD=${USAGEDBPW}
+    UAADB-PASSWORD=${UAADBPW}
+    CCDB-PASSWORD=${CCDBPW}
+    EOT
+    ```
+
+## <a id='config-databases'></a> Configure Databases for the System Components
+
+To configure databases for the system components:
+
+1. Change directory into the `configuration-values` directory and open the `value.yml` file.
+
+1. Populate the system component section with the following:
+
+    ```yaml
+    capi:
+      database:
+        host: "CCDB-HOSTNAME"
+        user: cloud_controller
+        password: "CCDB-PASSWORD"
+        name: cloud_controller
+
+    uaa:
+      database:
+        host: "UAADB-HOSTNAME"
+        user: uaa
+        password: "UAADB-PASSWORD"
+        name: uaa
+
+    usage_service:
+      database:
+        host: "USAGE-SERVICE-DB-HOSTNAME"
+        user: usage_service
+        password: "USAGE-SERVICE-DB-PASSWORD"
+        name: usage_service
+     ```
+
+    Where:
+    * `host` is the fully qualified domain name for the respective component database server.
+    * `user` is the name of the user that accesses the respective database. The default user is the component name.
+    * `password` is the password of database user.
+    * `name` is the name of database. The default name is the component name.
+    * (Optional) To use your own CA certificates for these databases, add the following lines below the database name:
+
+        ```yaml
+        ca_cert: |
+          -----BEGIN CERTIFICATE-----
+          CCDB-CA-CERTIFICATE-CONTENT
+          -----END CERTIFICATE-----
+        ```
+
+1. Save the file.
+
+## <a id="next"></a> Next Steps
+
+After configuring the databases, proceed to
+[Configuring Apps Manager](configuring-apps-manager.html).
