@@ -2,17 +2,16 @@
 title: Preparing to Install Tanzu Application Service for Kubernetes
 owner: Tanzu Application Service Release Engineering
 ---
-<% current_page.data.title = "Installing #{vars.app_runtime_full}" %>
 
-This topic describes how to prepare dependencies and your local workstation to install <%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>).
+This topic describes how to prepare dependencies and your local workstation to install {{ vars.app_runtime_full }} ({{ vars.app_runtime_short }}).
 
 ## <a id='preparing-installation-resources'></a> Prepare Your Installation Resources
 
-Download the <%= vars.app_runtime_short %> installation resources from [VMware Tanzu Network](https://network.pivotal.io/products/tas-for-kubernetes).
+Download the {{ vars.app_runtime_short }} installation resources from [VMware Tanzu Network](https://network.pivotal.io/products/tas-for-kubernetes).
 
 1. Log in to [VMware Tanzu Network](https://network.pivotal.io).
 
-1. Navigate to [VMware <%= vars.app_runtime_full %>](https://network.pivotal.io/products/tas-for-kubernetes) on the _VMware Tanzu Network_.
+1. Navigate to [VMware {{ vars.app_runtime_full }}](https://network.pivotal.io/products/tas-for-kubernetes) on the _VMware Tanzu Network_.
 
 1. Download the "Tanzu Application Service" file to a local directory of your choice and rename it to `tanzu-application-service.tar`.
 
@@ -25,7 +24,7 @@ Download the <%= vars.app_runtime_short %> installation resources from [VMware T
 
 ## <a id='app-container-registry'></a> Ensure Your Container Registry is Accessible
 
-<%= vars.app_runtime_short %> depends on a container image registry to
+{{ vars.app_runtime_short }} depends on a container image registry to
 store images for buildpack-based applications.
 Supported registries include Harbor, Google Container Registry (GCR), and Docker Hub.
 
@@ -34,14 +33,14 @@ environment and is accessible at a domain name of your choice.
 The [VMware Harbor Registry tile](https://network.pivotal.io/products/harbor-container-registry)
 is one option to deploy it when using Ops Manager.
 
-Configure <%= vars.app_runtime_short %> to use your container registry when completing the procedures in
+Configure {{ vars.app_runtime_short }} to use your container registry when completing the procedures in
 [Configuring Your App Image Registry](configuring-app-image-registry.html)
 and [Configuring Your System Image Registry](configuring-sys-image-registry.html).
 
 
 ## <a id='system-domain'></a> Select a System Domain Name
 
-Decide on the DNS domain name you intend to use for the <%= vars.app_runtime_short %>
+Decide on the DNS domain name you intend to use for the {{ vars.app_runtime_short }}
 system domain, for example `sys.tas.example.com`.
 Neither this domain nor any of its subdomains should be in use for other services.
 

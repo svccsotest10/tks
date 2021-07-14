@@ -4,18 +4,18 @@ owner: Tanzu Application Service Release Engineering
 ---
 
 This topic provides an overview of how to back up 
-<%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>) using automation.  
+{{ vars.app_runtime_full }} ({{ vars.app_runtime_short }}) using automation.  
 
-To back up <%= vars.app_runtime_short %> manually, see 
-[Backing Up <%= vars.app_runtime_short %> Manually](bandr-backup-manual.html).  
+To back up {{ vars.app_runtime_short }} manually, see 
+[Backing Up {{ vars.app_runtime_short }} Manually](bandr-backup-manual.html).  
 
-<%= partial 'evaluation_only' %>
+{{> evaluation_only }}
 
-<%= partial 'limitation_notes' %>
+{{> limitation_notes }}
 
 ## <a id='overview'></a> Overview
 
-To back up <%= vars.app_runtime_short %> using automation:  
+To back up {{ vars.app_runtime_short }} using automation:  
 
 1. [Create and Configure a Service Account for Backing Up](#backup-service-account)  
 1. [Automate Your Velero Backup](#backup-create-script)  
@@ -24,7 +24,7 @@ To back up <%= vars.app_runtime_short %> using automation:
 ## <a id='prerequisites'></a> Prerequisites
 
 Complete the configuration for manual back up before proceeding with configuring automated back up. 
-For more information, see [Backing Up <%= vars.app_runtime_full %>](bandr-backup-manual.html).  
+For more information, see [Backing Up {{ vars.app_runtime_full }}](bandr-backup-manual.html).  
 
 ## <a id='backup-service-account'></a> Create and Configure a Service Account for Backing Up
 
@@ -264,5 +264,5 @@ To automate Velero back up using a Concourse pipeline:
 
 To review or troubleshoot an automated backup, 
 follow the steps in [Review a Completed Backup](bandr-backup-manual.html#backup-review) 
-in _Backing Up <%= vars.app_runtime_full %>_.
+in _Backing Up {{ vars.app_runtime_full }}_.
 

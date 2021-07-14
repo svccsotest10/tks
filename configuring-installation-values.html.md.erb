@@ -3,32 +3,30 @@ title: Configuring Installation Values
 owner: Tanzu Application Service Release Engineering
 ---
 
-This topic describes how to configure installation resources before deploying <%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>) to a Kubernetes cluster.
+This topic describes how to configure installation resources before deploying {{ vars.app_runtime_full }} ({{ vars.app_runtime_short }}) to a Kubernetes cluster.
 
 ## <a id='prerequisites'></a> Prerequisites
 
 Before proceeding, complete all sections in:
 
-* [Preparing to Install <%= vars.app_runtime_short %>](preparing-to-install-tas-for-kubernetes.html)
+* [Preparing to Install {{ vars.app_runtime_short }}](preparing-to-install-tas-for-kubernetes.html)
 * [Installing Command-Line Tools](installing-command-line-tools.html)
 
 ## <a id='overview'></a> Overview
 
-To configure installation values for <%= vars.app_runtime_short %>,
+To configure installation values for {{ vars.app_runtime_short }},
 modify a copy of the configuration values template:
 
 * [Copy the Configuration Values Template](#copy-template)
 * [Configure Installation Values](#configure-values)
 * [Configure Certificates](#configure-certs)
 
-<%#
 * [Copy the Configuration Values Template](#copy-template)
 * [Configure the System Domain](#configure-system-domain)
 * [Configure the Load Balancer](#configure-lb)
 * [Configure the Ingress Gateway Certificates](#configure-ingress-cert)
 * [(Optional) Configure Application Container Certificates](#configure-app-cert)
 * [(Optional) Configure Application Log Destinations](#configure-app-log-destinations)
-%>
 
 ## <a id='copy-template'></a> Copy the Configuration Values Template
 
@@ -52,7 +50,7 @@ Use the new directory to store configuration values for this installation.
 
 ## <a id='configure-values'></a> Configure Installation Values
 
-To configure <%= vars.app_runtime_short %> installation values,
+To configure {{ vars.app_runtime_short }} installation values,
 modify your copy of the configuration values template:
 
 * [Configure the System Domain](#configure-system-domain)
@@ -74,7 +72,7 @@ To configure your system domain:
     - "APP-DOMAIN"
     ```
     Where:
-    - `SYSTEM-DOMAIN` is the system domain you previously selected for your <%= vars.app_runtime_short %> installation.
+    - `SYSTEM-DOMAIN` is the system domain you previously selected for your {{ vars.app_runtime_short }} installation.
     - `APP-DOMAIN` is a separate, unique domain for hosting apps.
 
 1. Save the `values.yml` file.
@@ -96,7 +94,7 @@ To configure your LoadBalancer service:
     ```
     Where:
     * `ENABLED` configures the provisioning of the Kubernetes ingress with a `LoadBalancer` Istio ingress service.
-    To provision a `LoadBalancer` for the Istio ingress gateway required for <%= vars.app_runtime_short %>,
+    To provision a `LoadBalancer` for the Istio ingress gateway required for {{ vars.app_runtime_short }},
     enable `LoadBalancer` as follows:
     <table>
       <tr>
@@ -185,7 +183,7 @@ To configure optional application log destinations:
 
 ## <a id='configure-certs'></a> Configure Certificates
 
-To configure <%= vars.app_runtime_short %> certificate values,
+To configure {{ vars.app_runtime_short }} certificate values,
 modify your copy of the configuration values template:
 
 * [Configure the Ingress Gateway Certificates](#configure-ingress-cert)
@@ -193,7 +191,7 @@ modify your copy of the configuration values template:
 
 ### <a id='configure-ingress-cert'></a> Configure the Ingress Gateway Certificates
 
-<%= vars.app_runtime_short %> requires a certificate to terminate TLS at the ingress gateway
+{{ vars.app_runtime_short }} requires a certificate to terminate TLS at the ingress gateway
 and generates a self-signed TLS certificate for the ingress gateway
 if you do not provide one before installing.
 
@@ -266,7 +264,6 @@ After you complete this procedure, complete all of the following configuration p
 
 
 
-<%#
 1. **Application image registry configuration:**
 
     ```yaml
@@ -291,7 +288,7 @@ After you complete this procedure, complete all of the following configuration p
 
 1. **System databases configuration:**
 
-    <%= vars.app_runtime_short % > requires credentials to an external database.
+    {{ vars.app_runtime_short }} requires credentials to an external database.
 
     For instructions on how to configure the system database,
     see [Configuring Your System Databases](configuring-system-databases.html).
@@ -318,4 +315,3 @@ After you complete this procedure, complete all of the following configuration p
     ```
 
 1. **Apps Manager configuration:** for more information, see [Configuring Apps Manager](configuring-apps-manager.html)
-%>

@@ -4,10 +4,10 @@ owner: Apps Manager
 ---
 
 This topic describes how to customize the Apps Manager deployed with
-<%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>).
+{{ vars.app_runtime_full }} ({{ vars.app_runtime_short }}).
 
 ## <a id='overview'></a> Overview
-Apps Manager on <%= vars.app_runtime_short %> provides a UI for:  
+Apps Manager on {{ vars.app_runtime_short }} provides a UI for:  
 
 * Creating and deleting orgs, domains and spaces  
 * Managing services, members, and permissions
@@ -29,7 +29,7 @@ For more information about Apps Manager, see
 [Getting Started with Apps Manager](https://docs.run.pivotal.io/console/dev-console.html).
 
 <p class="note"><strong>Note:</strong> Users are currently unable to invite members to orgs and spaces through Apps Manager.
-  This feature depends on the Notifications Service, which is not available on <%= vars.app_runtime_short %>.
+  This feature depends on the Notifications Service, which is not available on {{ vars.app_runtime_short }}.
 </p>
 
 
@@ -42,12 +42,12 @@ Before customizing Apps Manager, complete the following:
 * Ensure that your installation has a `configuration-values` directory within the
 `tanzu-application-service` directory. For more information, see
 [Generate Internal Configuration Values](configuring-installation-values.html#generate-configuration-values)
-in _Configuring Installation Values for <%= vars.app_runtime_short %>_.
+in _Configuring Installation Values for {{ vars.app_runtime_short }}_.
 
 ## <a id='create-configuration'></a> Create the Apps Manager Configuration File
 
 Create and store your Apps Manager configuration values file within the `configuration-values`
-directory used to store <%= vars.app_runtime_short %> configuration values.
+directory used to store {{ vars.app_runtime_short }} configuration values.
 
 To create the `apps-manager-values.yml` Apps Manager configuration file:
 
@@ -164,12 +164,10 @@ The following are all of the configurable Apps Manager White-Label settings:
 ## <a id="next"></a> Next Steps
 
 After you complete this procedure, proceed to
-[Installing <%= vars.app_runtime_full %>](installing-tas-for-kubernetes.html).
+[Installing {{ vars.app_runtime_full }}](installing-tas-for-kubernetes.html).
 
-<%#
 # # #
-< a
-id='available-configurations'></a> Available Configurations
+<a id='available-configurations'></a> Available Configurations
 
 The following are all of the configurable Apps Manager settings:
 <table class="nice">
@@ -198,4 +196,3 @@ The following are all of the configurable Apps Manager settings:
 <tr><td>apps\_manager.whitelabeling.marketplace\_url</td><td>"/marketplace"</td><td>Apps Manager Marketplace link to point to a custom marketplace.</td></tr>
 <tr><td>apps\_manager.whitelabeling.secondary\_navigation\_links</td><td>'[{"name":"Docs","href":"https&#58;//docs.run.pivotal.io"},{"name":"Tools","href"&#58;"/tools"}]'</td><td>List of secondary navigation links of Apps Manager. Enter json string.</td></tr>
 </table>
-%>

@@ -2,22 +2,21 @@
 title: Installing Tanzu Application Service for Kubernetes
 owner: Tanzu Application Service Release Engineering
 ---
-<% current_page.data.title = "Installing #{vars.app_runtime_full}" %>
 
-This topic describes how to install <%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>)
+This topic describes how to install {{ vars.app_runtime_full }} ({{ vars.app_runtime_short }})
 from the VMware Tanzu Network and from a relocated image in a private container image registry.
 
 ## <a id='overview'></a> Overview
 
-To configure installation settings and install <%= vars.app_runtime_short %>:
+To configure installation settings and install {{ vars.app_runtime_short }}:
 
 1. [Prepare the Installation](#prepare-installation)
 1. [Generate Internal Configuration Values](#generate-configuration-values)
-1. [Install <%= vars.app_runtime_short %>](#install-tas-for-k8s)
+1. [Install {{ vars.app_runtime_short }}](#install-tas-for-k8s)
 
 ## <a id='prerequisites'></a> Prerequisites
 
-Before you install <%= vars.app_runtime_short %>, you must:
+Before you install {{ vars.app_runtime_short }}, you must:
 
 + Configure all of the required or recommended installation resources.
 See [Configuring Installation Values](configuring-installation-values.html).
@@ -27,11 +26,11 @@ See [Upgrading to cf CLI v7](https://docs.pivotal.io/application-service/2-10/cf
 
 ## <a id='support-backup'></a> Prepare the Installation
 
-To prepare for installing <%= vars.app_runtime_short %>:
+To prepare for installing {{ vars.app_runtime_short }}:
 
 1. Verify that your root directory contains `configuration-values` and `tanzu-application-service` directories.
 1. Change directory to the `tanzu-application-service` directory.
-1. To enable support for backing up and restoring <%= vars.app_runtime_short %>, copy the
+1. To enable support for backing up and restoring {{ vars.app_runtime_short }}, copy the
 `disaster-recovery.yml` file from the `config-optional` directory to the `config` directory:
 
     ```
@@ -40,9 +39,9 @@ To prepare for installing <%= vars.app_runtime_short %>:
 
 ## <a id='generate-configuration-values'></a> Generate Internal Configuration Values
 
-<%= vars.app_runtime_short %> requires internal configuration values, credentials and certificates to coordinate its components. These configuration values, credentials and certificates must be supplied to the <%= vars.app_runtime_short %> installation script.
+{{ vars.app_runtime_short }} requires internal configuration values, credentials and certificates to coordinate its components. These configuration values, credentials and certificates must be supplied to the {{ vars.app_runtime_short }} installation script.
 
-To generate the internal values, credentials and certificates needed during <%= vars.app_runtime_short %> installation, use a helper script in the installation resources:
+To generate the internal values, credentials and certificates needed during {{ vars.app_runtime_short }} installation, use a helper script in the installation resources:
 
 1. Change directory to the `tanzu-application-service` directory.
 1. To create new configuration files, run:
@@ -60,7 +59,7 @@ To generate the internal values, credentials and certificates needed during <%= 
     The default location for the `_generated-values.yml` file is: `../configuration-values/_generated-values.yml`.
  <br>
     * **tas-vars**: The `tas-vars` data store contains credentials and certificates
-    that are not used during <%= vars.app_runtime_short %> installation but may be needed for future value generation.
+    that are not used during {{ vars.app_runtime_short }} installation but may be needed for future value generation.
     The default location for the `tas-vars` data store is: `../configuration-values/vars-store/tas-vars`.
 <br>
     * **Certificates**: Self-signed `system-certificate` and `workload-certificate` certificates are created
@@ -73,31 +72,31 @@ To generate the internal values, credentials and certificates needed during <%= 
 </p>
 
 <p class= "note warning">
-  <strong>Warning:</strong> Do not rotate encryption keys in the Kubernetes stack in this version of <%= vars.app_runtime_short %>. 
+  <strong>Warning:</strong> Do not rotate encryption keys in the Kubernetes stack in this version of {{ vars.app_runtime_short }}. 
   The <code>capi.database.encryption_key</code> value should not be modified after it is initially set because
   the Cloud API fails during <code>cf push</code> for Kubernetes clusters with a modified encryption key. 
 </p>
 
 <p class= "note warning">
-  <strong>Warning:</strong> Do not rotate the blobstore secret key in this version of <%= vars.app_runtime_short %>. 
+  <strong>Warning:</strong> Do not rotate the blobstore secret key in this version of {{ vars.app_runtime_short }}. 
   The <code>blobstore.secret_access_key</code> value should not be altered after it is initially set because
   redeployments fail when using configurations with a modified blobstore secret key. 
 </p>
 
-## <a id='install-tas-for-k8s'></a> Install <%= vars.app_runtime_short %>
+## <a id='install-tas-for-k8s'></a> Install {{ vars.app_runtime_short }}
 
-To install <%= vars.app_runtime_short %>:
+To install {{ vars.app_runtime_short }}:
 
 1. Follow the procedure appropriate for the configuration you created:
-    * [Install <%= vars.app_runtime_short %> from the VMware Tanzu Network](#install-tas-for-k8s-from-network)
-    * [Install <%= vars.app_runtime_short %> from a Private System Registry](#post-image-relocation)
+    * [Install {{ vars.app_runtime_short }} from the VMware Tanzu Network](#install-tas-for-k8s-from-network)
+    * [Install {{ vars.app_runtime_short }} from a Private System Registry](#post-image-relocation)
 
-1. [Configure DNS for the <%= vars.app_runtime_short %> Ingress Gateway](#post-installation-networking-configuration)
-1. [Validate Your <%= vars.app_runtime_short %> Installation](installing-tas-for-kubernetes.html#post-installation-configuration)
+1. [Configure DNS for the {{ vars.app_runtime_short }} Ingress Gateway](#post-installation-networking-configuration)
+1. [Validate Your {{ vars.app_runtime_short }} Installation](installing-tas-for-kubernetes.html#post-installation-configuration)
 
-### <a id='install-tas-for-k8s-from-network'></a> Install <%= vars.app_runtime_short %> from the VMware Tanzu Network
+### <a id='install-tas-for-k8s-from-network'></a> Install {{ vars.app_runtime_short }} from the VMware Tanzu Network
 
-To install <%= vars.app_runtime_short %> from the VMware Tanzu Network:
+To install {{ vars.app_runtime_short }} from the VMware Tanzu Network:
 
 1. To validate your configuration:
 
@@ -117,20 +116,20 @@ To install <%= vars.app_runtime_short %> from the VMware Tanzu Network:
     The `cluster-detect` script communicates with the kube API to determine deployment values
     and saves those values in a `cluster-values` configuration file.
 
-1. To install <%= vars.app_runtime_short %>, run the installation script:
+1. To install {{ vars.app_runtime_short }}, run the installation script:
 
     ```bash
     ./bin/install-tas.sh ../configuration-values
     ```
 
-    The command installs <%= vars.app_runtime_short %> using the deployment values you generated previously.
+    The command installs {{ vars.app_runtime_short }} using the deployment values you generated previously.
 
-### <a id='post-image-relocation'></a> Install <%= vars.app_runtime_short %> from a Private System Registry
+### <a id='post-image-relocation'></a> Install {{ vars.app_runtime_short }} from a Private System Registry
 
-After uploading your <%= vars.app_runtime_short %> images to the private registry,
-you can install <%= vars.app_runtime_short %> using a modified installation procedure.
+After uploading your {{ vars.app_runtime_short }} images to the private registry,
+you can install {{ vars.app_runtime_short }} using a modified installation procedure.
 
-To install <%= vars.app_runtime_short %>:
+To install {{ vars.app_runtime_short }}:
 
 1. To validate your configuration:
 
@@ -150,7 +149,7 @@ To install <%= vars.app_runtime_short %>:
     The `cluster-detect` script communicates with the kube API to determine deployment values
     and saves those values in a `cluster-values` configuration file.
 
-1. To deploy <%= vars.app_runtime_short %> using the images in the private registry:
+1. To deploy {{ vars.app_runtime_short }} using the images in the private registry:
 
 
     ```
@@ -160,9 +159,9 @@ To install <%= vars.app_runtime_short %>:
     kapp deploy -a cf -f /tmp/final_deployment.yml
     ```
 
-## <a id='post-installation-networking-configuration'></a> Configure DNS for the <%= vars.app_runtime_short %> Ingress Gateway
+## <a id='post-installation-networking-configuration'></a> Configure DNS for the {{ vars.app_runtime_short }} Ingress Gateway
 
-To configure DNS entries for the <%= vars.app_runtime_short %> ingress gateway:
+To configure DNS entries for the {{ vars.app_runtime_short }} ingress gateway:
 
 * If you intend to use a Kubernetes `LoadBalancer` service for the ingress gateway, 
 create and configure a Kubernetes `LoadBalancer` service:  
@@ -183,7 +182,7 @@ configure DNS without the `LoadBalancer` service:
 
 ### <a id='post-installation-dns-with-k8s-lb'></a> Configure the Ingress Gateway DNS With a Kubernetes Load Balancer
 
-This section describes how to configure DNS if you have configured <%= vars.app_runtime_short %> to
+This section describes how to configure DNS if you have configured {{ vars.app_runtime_short }} to
 use a Kubernetes LoadBalancer Service for the ingress gateway.
 
 To configure DNS with your system domain resolving to the external IP address of the load balancer:
@@ -221,7 +220,7 @@ To configure DNS with your system domain resolving to the external IP address of
 
     Ensure you include the `*.` wildcard prefix in the new record so that all subdomains of the system domain also resolve to the load balancer.
 
-For information about configuring <%= vars.app_runtime_short %> to
+For information about configuring {{ vars.app_runtime_short }} to
 use a Kubernetes LoadBalancer Service for the ingress gateway, see
 [Use a LoadBalancer Service for the Ingress Gateway](configuring-installation-values.html#adjust-installation-resources-networking),
 
@@ -229,8 +228,8 @@ use a Kubernetes LoadBalancer Service for the ingress gateway, see
 ### <a id='post-installation-dns-with-lb'></a> Configure the Ingress Gateway DNS With an External Load Balancer
 
 This section describes how to configure DNS
-if you have an external load balancer to use for ingress to the <%= vars.app_runtime_short %> installation and
-have deployed <%= vars.app_runtime_short %> without a Kubernetes LoadBalancer service
+if you have an external load balancer to use for ingress to the {{ vars.app_runtime_short }} installation and
+have deployed {{ vars.app_runtime_short }} without a Kubernetes LoadBalancer service
 for the ingress gateway.
 
 To configure the external load balancer to forward HTTP and HTTPS traffic to the Kubernetes worker nodes:
@@ -280,7 +279,7 @@ internal IP addresses for the Kubernetes worker nodes.
 
 This section describes how to configure your DNS
 if you do not have an external load balancer to use for ingress and
-have deployed <%= vars.app_runtime_short %> without a Kubernetes LoadBalancer service
+have deployed {{ vars.app_runtime_short }} without a Kubernetes LoadBalancer service
 for the ingress gateway.
 
 To set up your DNS records to establish ingress connectivity directly to the worker nodes:
@@ -311,11 +310,11 @@ resolving to the set of external IP addresses for the worker nodes:
     of the system domain also resolve to the IP addresses.
 
 
-## <a id='post-installation-configuration'></a> Validate Your <%= vars.app_runtime_short %> Installation
+## <a id='post-installation-configuration'></a> Validate Your {{ vars.app_runtime_short }} Installation
 
-<p class="note"><strong>Note</strong>: Managing apps and services on <%= vars.app_runtime_short %> requires cf CLI v7.0.1 or later.</p>
+<p class="note"><strong>Note</strong>: Managing apps and services on {{ vars.app_runtime_short }} requires cf CLI v7.0.1 or later.</p>
 
-To validate your <%= vars.app_runtime_short %> installation:
+To validate your {{ vars.app_runtime_short }} installation:
 
 1. Use cf CLI to target the installation at the `api` subdomain of the system domain:
 
@@ -323,7 +322,7 @@ To validate your <%= vars.app_runtime_short %> installation:
     cf api api.SYSTEM-DOMAIN --skip-ssl-validation
     ```
 
-    Where `SYSTEM-DOMAIN` is your <%= vars.app_runtime_short %> installation system domain.
+    Where `SYSTEM-DOMAIN` is your {{ vars.app_runtime_short }} installation system domain.
 1. Change directory into the directory containing the `tanzu-application-service` and `configuration-values`
 directories.
 
@@ -361,7 +360,7 @@ stored in the `cf_admin_password` key in the `configuration-values/_generated-va
 1. Change directory into the resulting `test-app` directory.
 
 
-1. To push the test app to your <%= vars.app_runtime_short %> installation:
+1. To push the test app to your {{ vars.app_runtime_short }} installation:
 
     ```
     cf push test-app --hostname test-app
@@ -373,7 +372,7 @@ stored in the `cf_admin_password` key in the `configuration-values/_generated-va
     curl test-app.APPS-DOMAIN
     ```
 
-    Where `APPS-DOMAIN` is your <%= vars.app_runtime_short %> installation apps domain.
+    Where `APPS-DOMAIN` is your {{ vars.app_runtime_short }} installation apps domain.
 
     <p class="note">
       <strong>Note:</strong> The route for the test application defaults to a subdomain of the system domain.
@@ -388,9 +387,9 @@ To validate Velero installation:
     ```
 
 
-## <a id='check-installed-version'></a> Check the Version of <%= vars.app_runtime_short %> on a Cluster
+## <a id='check-installed-version'></a> Check the Version of {{ vars.app_runtime_short }} on a Cluster
 
-To check the version of <%= vars.app_runtime_short %> currently installed on a cluster, use `kubectl`:
+To check the version of {{ vars.app_runtime_short }} currently installed on a cluster, use `kubectl`:
 
 ```
 kubectl get ConfigMap version -n tas-system -o jsonpath="{.data}"
@@ -410,4 +409,4 @@ map[commit:53ad0edd093dbad71debc193541b5c6f0b2b094d version:0.4.0-build.57]
 ## <a id="next"></a> Next Steps
 
 After you complete this procedure, proceed to
-[Configuring Back Up and Restore for <%= vars.app_runtime_full %>](bandr-configuration.html).
+[Configuring Back Up and Restore for {{ vars.app_runtime_full }}](bandr-configuration.html).

@@ -1,36 +1,35 @@
 ---
-title: Backing Up <%= vars.app_runtime_full %> Manually
+title: Backing Up {{ vars.app_runtime_full }} Manually
 owner: Tanzu Application Service Release Engineering
 ---
-<% current_page.data.title = "Backing Up #{vars.app_runtime_full}" %>
 
 This topic provides an overview of how to manually back up
-<%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>).  
+{{ vars.app_runtime_full }} ({{ vars.app_runtime_short }}).  
 
-To back up <%= vars.app_runtime_short %> automatically, see 
-[Backing Up <%= vars.app_runtime_short %> Using Automation](bandr-backup-auto.html).  
+To back up {{ vars.app_runtime_short }} automatically, see 
+[Backing Up {{ vars.app_runtime_short }} Using Automation](bandr-backup-auto.html).  
 
-<%= partial 'evaluation_only' %>
+{{> evaluation_only }}
 
-<%= partial 'limitation_notes' %>
+{{> limitation_notes }}
 
 ## <a id='overview'></a> Overview
 
-To back up <%= vars.app_runtime_short %>:
+To back up {{ vars.app_runtime_short }}:
 
-* [Back Up <%= vars.app_runtime_short %>](#backup-tas4k8s)
+* [Back Up {{ vars.app_runtime_short }}](#backup-tas4k8s)
 * [Monitor Backup Progress](#backup-progress)
 * [Review a Completed Backup](#backup-review)
 
 ## <a id='prerequisites'></a> Prerequisites
 
-Before you back up <%= vars.app_runtime_short %>, 
+Before you back up {{ vars.app_runtime_short }}, 
 you must have configured back up and restore. 
-See [Configuring Back Up and Restore for <%= vars.app_runtime_short %>](bandr-configuration.html).  
+See [Configuring Back Up and Restore for {{ vars.app_runtime_short }}](bandr-configuration.html).  
 
-## <a id='backup-tas4k8s'></a> Back Up <%= vars.app_runtime_short %>
+## <a id='backup-tas4k8s'></a> Back Up {{ vars.app_runtime_short }}
 
-To back up <%= vars.app_runtime_short %> Tanzu Postgres Instances:
+To back up {{ vars.app_runtime_short }} Tanzu Postgres Instances:
 
 1. Start a Velero back up:
 
@@ -50,14 +49,14 @@ To back up <%= vars.app_runtime_short %> Tanzu Postgres Instances:
 <br>
     * `NAMESPACES` is the comma-delimited list of namespaces for the selected resources to back up.
 <br>
-    The namespace list for backing up the default <%= vars.app_runtime_short %> configuration is `postgres-dbs,cf-system`,
-    where `postgres-dbs` is the default <%= vars.app_runtime_short %> database namespace.
+    The namespace list for backing up the default {{ vars.app_runtime_short }} configuration is `postgres-dbs,cf-system`,
+    where `postgres-dbs` is the default {{ vars.app_runtime_short }} database namespace.
 <br>
     * `RESOURCE-LIST` is the comma-delimited list of selected resources to back up.
 <br>
-    The resource list for backing up the default <%= vars.app_runtime_short %> configuration is `postgres, cf-metadata`,
+    The resource list for backing up the default {{ vars.app_runtime_short }} configuration is `postgres, cf-metadata`,
     where `cf-metadata` is specified for backing up the CF Metadata app,
-    and `postgres` for backing up the <%= vars.app_runtime_short %> Postgres instances.
+    and `postgres` for backing up the {{ vars.app_runtime_short }} Postgres instances.
 <br>
     * `STORAGE-LOCATION` is the location where Velero should store the generated backup artifacts.
 <br>
@@ -135,10 +134,10 @@ To review the backup logs of a completed backup:
 
 To validate a completed backup by reviewing the Cloud Foundry data that was backed up:
 
-1. If you do not have the <%= vars.app_runtime_short %> installation resources:
+1. If you do not have the {{ vars.app_runtime_short }} installation resources:
     1. Download and extract the resources from [VMware Tanzu Network](https://network.pivotal.io/products/tas-for-kubernetes).
     For more information, see [Preparing Installation Resources](preparing-to-install-tas-for-kubernetes.html#preparing-installation-resources).
-    1. Inspect the <%= vars.app_runtime_short %> artifact.
+    1. Inspect the {{ vars.app_runtime_short }} artifact.
     Confirm the `get-backup-metadata.sh` script is present in the following directory: `tanzu-application-service/config/_ytt_lib/github.com/pivotal/cf-for-k8s-disaster-recovery/backup-metadata/bin`.
 
 1. To confirm the name of the backup to validate:

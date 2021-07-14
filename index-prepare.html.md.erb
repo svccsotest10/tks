@@ -1,21 +1,20 @@
 ---
-title: Preparing to Install <%= vars.app_runtime_full %>
+title: Preparing to Install {{ vars.app_runtime_full }}
 owner: Tanzu Application Service Release Engineering
 ---
-<% current_page.data.title = "Installing #{vars.app_runtime_full}" %>
 
 This topic provides an overview of how to prepare for
-<%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>) installation.
+{{ vars.app_runtime_full }} ({{ vars.app_runtime_short }}) installation.
 
-<%= partial 'evaluation_only' %>
+{{> evaluation_only }}
 
-<%= partial 'limitation_notes' %>
+{{> limitation_notes }}
 
 ## <a id='overview'></a> Overview
 
-To prepare for <%= vars.app_runtime_short %> installation, complete the following:
+To prepare for {{ vars.app_runtime_short }} installation, complete the following:
 
-* [Preparing to Install <%= vars.app_runtime_short %>](preparing-to-install-tas-for-kubernetes.html)
+* [Preparing to Install {{ vars.app_runtime_short }}](preparing-to-install-tas-for-kubernetes.html)
 * [Installing Command-Line Tools](installing-command-line-tools.html)
 * [Preparing the Kubernetes Cluster](preparing-kubernetes-cluster.html)
 * [Installing a Default Storage Class](installing-default-storage-class.html)

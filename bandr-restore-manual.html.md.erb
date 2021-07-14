@@ -1,45 +1,44 @@
 ---
-title: Restoring <%= vars.app_runtime_full %>
+title: Restoring {{ vars.app_runtime_full }}
 owner: Tanzu Application Service Release Engineering
 ---
-<% current_page.data.title = "Restoring #{vars.app_runtime_full}" %>
 
 This topic provides an overview of how to restore
-<%= vars.app_runtime_full %> (<%= vars.app_runtime_short %>) from a backup.
+{{ vars.app_runtime_full }} ({{ vars.app_runtime_short }}) from a backup.
 
-<%= partial 'evaluation_only' %>
+{{> evaluation_only }}
 
-<%= partial 'limitation_notes' %>
+{{> limitation_notes }}
 
 ## <a id='overview'></a> Overview
 
 
-When restoring the <%= vars.app_runtime_short %> database,
+When restoring the {{ vars.app_runtime_short }} database,
 the data for all the orgs, spaces, and apps are restored.
 
 Database restore is not granular.
 
-To restore <%= vars.app_runtime_short %>: 
+To restore {{ vars.app_runtime_short }}: 
 
-* [Start <%= vars.app_runtime_short %> Restore](#restore-tas)
+* [Start {{ vars.app_runtime_short }} Restore](#restore-tas)
 * [Monitor the Restore Progress](#restore-monitoring)
 * [Review the Completed Restore](#restore-review)
 
 ## <a id='prerequisites'></a> Prerequisites
 
-You must have access to the <%= vars.app_runtime_short %> Velero backup artifacts you plan to restore.
+You must have access to the {{ vars.app_runtime_short }} Velero backup artifacts you plan to restore.
 
 
-## <a id='restore-tas'></a> Start <%= vars.app_runtime_short %> Restore
+## <a id='restore-tas'></a> Start {{ vars.app_runtime_short }} Restore
 
-To restore a <%= vars.app_runtime_short %> backup:
+To restore a {{ vars.app_runtime_short }} backup:
 
 * [Prepare the Velero Backup Artifacts](#restore-prepare)
-* [Start a <%= vars.app_runtime_short %> Velero Restore](#restore-start)
+* [Start a {{ vars.app_runtime_short }} Velero Restore](#restore-start)
 
 ### <a id='restore-prepare'></a> Prepare the Velero Backup Artifacts
 
-To prepare your <%= vars.app_runtime_short %> Velero backup artifacts:
+To prepare your {{ vars.app_runtime_short }} Velero backup artifacts:
 
 1. Determine the name of the backup to be restored:
 
@@ -80,9 +79,9 @@ generate a JSON file containing a snapshot of Cloud Foundry at the time of the b
     </p>
 
 
-### <a id='restore-start'></a> Start a <%= vars.app_runtime_short %> Velero Restore
+### <a id='restore-start'></a> Start a {{ vars.app_runtime_short }} Velero Restore
 
-To restore <%= vars.app_runtime_short %> Tanzu Postgres Instances:
+To restore {{ vars.app_runtime_short }} Tanzu Postgres Instances:
 
 1. To restore Tanzu Postgres Databases:
 
