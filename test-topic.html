@@ -1,0 +1,20 @@
+---
+title: Testing Outputs from Markdown
+owner: Tanzu Application Service Release Engineering
+---
+This topic tests various md contructs in output
+
+## <a id='variable-reference'></a> Variable Reference
+
+Reference to short product name {{ vars.app_runtime_short }}
+Reference to long product name {{ vars.app_runtime_full }}
+
+## <a id='content-reference'></a> Content Reference
+
+Reference to note below:
+
+{{> evaluation_only }}
+
+## <a id='hyperlink'></a> Hyperlink
+* [Preparing the Kubernetes Cluster](preparing-kubernetes-cluster.html)
+* [Installing a Default Storage Class](installing-default-storage-class.html)
